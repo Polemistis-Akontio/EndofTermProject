@@ -1,0 +1,4 @@
+# .gitignore
+ESPN_JSON/
+node_modules/
+IgnoredScripts/
