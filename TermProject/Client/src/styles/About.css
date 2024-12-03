@@ -1,0 +1,16 @@
+.about-container {
+    text-align: center;
+}
+
+.about-image {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 50%;
+    margin: 20px auto;
+    display: block;
+}
+
+.about-text {
+    font-size: 16px;
+    margin: 20px 0;
+}

@@ -1,0 +1,44 @@
+/* Footer container styles */
+.footer {
+    width: 100%; /* Make footer span the full width */
+    position: fixed; /* Stick it to the bottom of the viewport */
+    bottom: 0;
+    left: 0;
+    background-color: #0F131A;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+    height: 30px;
+    font-size: 12px;
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+  
+  /* Footer navigation styles */
+.footer-nav {
+    display: flex;
+    gap: 15px; /* Space between links */
+}
+.footer-nav a {
+    color: #ccc; /* Light gray links */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth hover effect */
+}
+  
+.footer-nav a:hover {
+    color: white; /* Change color on hover */
+}
+  
+  /* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer {
+      flex-direction: column; /* Stack items vertically on smaller screens */
+      text-align: center; /* Center-align text */
+    }
+  
+    .footer-nav {
+      margin-top: 10px;
+      gap: 10px; /* Reduce gap on smaller screens */
+    }
+}

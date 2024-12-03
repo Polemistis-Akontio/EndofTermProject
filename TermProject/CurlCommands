@@ -1,0 +1,103 @@
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY4NzcxN30.PgGSh9gvZIXX9HCqP3qlliIPspsF_KiMSS1NgR6tNr8
+ULIMITED TIME ADMIN TOKEN
+
+
+Curl to create admin user
+
+curl --location 'http://localhost:3000/auth/register' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "admin@admin.com",
+    "password": "password",
+    "is_admin": 1
+}'
+
+Curl to login admin user
+
+curl --location 'http://localhost:3000/auth/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "admin@admin.com",
+    "password": "password"
+}'
+
+
+Curl to view admin profile
+
+curl --location 'http://localhost:3000/auth/profile' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY3MTcyOCwiZXhwIjoxNzMyNjg2MTI4fQ.tXj79tQT_KAPA7mUOVDuZw1A8t-RCV1eR6LydkbWX0o'
+
+
+Curl to delete second profile
+
+curl --location --request DELETE 'http://localhost:3000/auth/profile' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaXNfYWRtaW4iOjAsImlhdCI6MTczMjY3MTkyMywiZXhwIjoxNzMyNjg2MzIzfQ.w0ikPEkaah_X2QaGIRwmq4lN7o6ejtzms6B-iItnTk4' \
+--data ''
+
+
+Curl to update Admin Profile
+
+curl --location --request PUT 'http://localhost:3000/auth/profile' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY3MTcyOCwiZXhwIjoxNzMyNjg2MTI4fQ.tXj79tQT_KAPA7mUOVDuZw1A8t-RCV1eR6LydkbWX0o' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "newEmail@admin.com",
+    "password": "newPassword"
+}'
+
+
+Curl to get Team stats by team ID, and with a page parameter due to the high volume of JSON returned
+
+curl --location 'http://localhost:3000/api/stats/teams/6?page=4' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY3MTcyOCwiZXhwIjoxNzMyNjg2MTI4fQ.tXj79tQT_KAPA7mUOVDuZw1A8t-RCV1eR6LydkbWX0o'
+
+
+Curl to get Team stats by Id and Year
+
+curl --location 'http://localhost:3000/api/stats/teams/6/2022' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY4NzcxN30.PgGSh9gvZIXX9HCqP3qlliIPspsF_KiMSS1NgR6tNr8'
+
+Curl to get All Team Records by ID
+
+curl --location 'http://localhost:3000/api/stats/teams/6/records' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY4NzcxN30.PgGSh9gvZIXX9HCqP3qlliIPspsF_KiMSS1NgR6tNr8'
+
+Curl to get A player's stats by ID
+
+curl --location 'http://localhost:3000/api/stats/player/4047646' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY4NzcxN30.PgGSh9gvZIXX9HCqP3qlliIPspsF_KiMSS1NgR6tNr8'
+
+
+Curl to get a player's career stats by Id 
+
+curl --location 'http://localhost:3000/api/stats/player/4047646/careerStats' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY4NzcxN30.PgGSh9gvZIXX9HCqP3qlliIPspsF_KiMSS1NgR6tNr8'
+
+
+Curl to get a players stats by year and ID
+
+curl --location 'http://localhost:3000/api/stats/player/4047646/2023' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY4NzcxN30.PgGSh9gvZIXX9HCqP3qlliIPspsF_KiMSS1NgR6tNr8'
+
+
+Searching players by position 
+
+curl --location 'http://localhost:3000/api/stats/player/position/Quarterback' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY4NzcxN30.PgGSh9gvZIXX9HCqP3qlliIPspsF_KiMSS1NgR6tNr8'
+
+
+Curl for all team stat categories
+
+curl --location 'http://localhost:3000/api/stats/team_stat_categories' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY4NzcxN30.PgGSh9gvZIXX9HCqP3qlliIPspsF_KiMSS1NgR6tNr8'
+
+same but for players
+
+curl --location 'http://localhost:3000/api/stats/player_stat_categories' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY4NzcxN30.PgGSh9gvZIXX9HCqP3qlliIPspsF_KiMSS1NgR6tNr8'
+
+Search Query Curl for all tables
+
+curl --location 'http://localhost:3000/api/stats/search?q=Allen' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNfYWRtaW4iOjEsImlhdCI6MTczMjY4NzcxN30.PgGSh9gvZIXX9HCqP3qlliIPspsF_KiMSS1NgR6tNr8'
+

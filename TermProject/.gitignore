@@ -2,3 +2,5 @@
 ESPN_JSON/
 node_modules/
 IgnoredScripts/
+.env
+Fixables.txt

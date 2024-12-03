@@ -16,9 +16,10 @@ function initializeDatabase() {
     loginDB.serialize(() => {
         loginDB.run(`
             CREATE TABLE IF NOT EXISTS login (
-            id INT PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             email VARCHAR(255) UNIQUE,
-            password VARCHAR(255)
+            password VARCHAR(255),
+            is_admin BOOLEAN DEFAULT 0
             )`
         , (err) => {
             if(err) {
