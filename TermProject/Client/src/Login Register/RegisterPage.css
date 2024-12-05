@@ -1,0 +1,75 @@
+.register-container {
+  width: 100%;
+  max-width: 400px; /* Restrict max width for better readability */
+  margin: 50px auto;
+  padding: 30px;
+  background: #2b2b3c; /* Darker background for high contrast */
+  border-radius: 8px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.6); /* Dark shadow for emphasis */
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between form elements */
+  align-items: stretch;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ffffff; /* Light text color */
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #b3b3b3; /* Muted light color for labels */
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px;
+  border: 1px solid #555555; /* Subtle border */
+  border-radius: 5px;
+  background: #2b2b3c; /* Dark input background */
+  color: #ffffff; /* Light text */
+}
+
+input::placeholder {
+  color: #a1a1b3; /* Placeholder text color */
+}
+
+button.btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff; /* Button color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button.btn:hover {
+  background-color: #0056b3; /* Darker button hover color */
+}
+
+.error {
+  color: #ff6b6b; /* Red color for errors */
+  font-size: 14px;
+}
+
+.login-link {
+  text-align: center;
+}
+
+.login-link a {
+  color: #4fa3ff; /* Link color */
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}

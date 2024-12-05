@@ -1,4 +1,4 @@
-import '../styles/Footer.css'; // Make sure this path matches your project structure
+import './Footer.css'; // Make sure this path matches your project structure
 import { Link } from 'react-router-dom';
 
 const Footer = () => {

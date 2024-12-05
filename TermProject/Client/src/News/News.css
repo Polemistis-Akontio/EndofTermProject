@@ -1,0 +1,106 @@
+:root {
+    --background-color-dark: #242424;
+    --text-color-dark: #e0e0e0;
+    --highlight-color-dark: #333333;
+    --even-color-dark: #2e2e2e; /* Higher contrast than global background */
+    --odd-color-dark: #1f1f1f; /* Differentiated but still dark */
+    --link-color-dark: #82aaff;
+}
+
+body {
+    background-color: var(--background-color-dark); /* Global background */
+    color: var(--text-color-dark);
+    margin: 0;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.news-container {
+    padding: 10px;
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.news-list {
+    display: flex;
+    flex-direction: column; /* Stack articles vertically */
+    gap: 20px; /* Space between articles */
+    padding: 0;
+    margin: 0;
+}
+
+.news-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--highlight-color-dark);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background-color: var(--highlight-color-dark);
+    width: 100%; /* Ensures the item spans full container width */
+}
+
+.news-item:nth-child(even) {
+    background-color: var(--even-color-dark); /* Higher contrast dark grey */
+}
+
+.news-item:nth-child(odd) {
+    background-color: var(--odd-color-dark); /* Slightly darker than even */
+}
+
+.news-item h3 {
+    font-size: 1.5em;
+    margin: 0;
+    margin-bottom: 10px;
+    color: var(--text-color-dark);
+    text-align: center;
+}
+
+.news-item p {
+    font-size: 1em;
+    color: var(--text-color-dark);
+    margin-bottom: 10px;
+    text-align: justify;
+    line-height: 1.6;
+}
+
+.news-image {
+    width: 100%; /* Stretch image to the full width of its container */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 15px;
+    object-fit: cover; /* Ensures the image fills its container properly */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.last-modified {
+    font-size: 0.8em;
+    color: #aaa;
+}
+
+a {
+    color: var(--link-color-dark);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-color: var(--highlight-color-dark);
+}
+
+/* Add a clear separator between articles */
+.news-item:not(:last-child) {
+    border-bottom: 2px solid var(--highlight-color-dark); /* Separator line between articles */
+    padding-bottom: 15px; /* Add padding at the bottom of each article */
+}
+
+h2 {
+    margin-bottom: 20px;
+}

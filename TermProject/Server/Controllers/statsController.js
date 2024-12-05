@@ -1,48 +1,59 @@
 const db = require('../databaseInitialize');
 
 // Utility function for pagination
-const handlePagination = (total, limit, page) => {
-  const totalPages = Math.ceil(total / limit);
+const handlePagination = (total, itemsPerPage, page) => {
+  const totalPages = Math.ceil(total / itemsPerPage);
   return {
     total,
     totalPages,
     currentPage: page,
-    itemsPerPage: limit,
+    itemsPerPage,
   };
 };
+
 
 // Get team stats by ID with pagination
 const getTeamStatsById = (req, res) => {
   const { team_id } = req.params;
+  const { category_id, year } = req.query;  // Get category_id and year from the query parameters
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const offset = (page - 1) * limit;
+  const itemsPerPage = parseInt(req.query.itemsPerPage) || 10; // Default to 10 if not provided
+  const offset = (page - 1) * itemsPerPage;
+  console.log(req.query);
+
+  // Check if category_id and year are provided
+  if (!category_id || !year) {
+    return res.status(400).json({ error: 'Both category_id and year are required' });
+  }
 
   const query = `
     SELECT * FROM teamYearlyStats
-    WHERE team_id = ?
+    WHERE team_id = ? AND category_id = ? AND year = ?
     LIMIT ? OFFSET ?;
   `;
-  const countQuery = `SELECT COUNT(*) AS total FROM teamYearlyStats WHERE team_id = ?;`;
+  const countQuery = `
+    SELECT COUNT(*) AS total 
+    FROM teamYearlyStats 
+    WHERE team_id = ? AND category_id = ? AND year = ?;
+  `;
 
-  db.all(query, [team_id, limit, offset], (err, rows) => {
+  db.all(query, [team_id, category_id, year, itemsPerPage, offset], (err, rows) => {
     if (err) return res.status(500).json({ error: 'Database error', details: err.message });
     if (rows.length === 0) return res.status(404).json({ message: 'Team stats not found' });
 
-    db.get(countQuery, [team_id], (err, countResult) => {
+    db.get(countQuery, [team_id, category_id, year], (err, countResult) => {
       if (err) return res.status(500).json({ error: 'Database error', details: err.message });
+
       res.status(200).json({
         teamStats: rows,
-        pagination: handlePagination(countResult?.total || 0, limit, page),
+        pagination: handlePagination(countResult?.total || 0, itemsPerPage, page),
       });
     });
   });
 };
-
 // Get team stats by ID and year
 const getTeamStatsByIdAndYear = (req, res) => {
   const { team_id, year } = req.params;
-  console.log(team_id, year);
   const query = `
     SELECT * FROM teamYearlyStats
     WHERE team_id = ? AND year = ?;
@@ -60,8 +71,8 @@ const getTeamStatsByIdAndYear = (req, res) => {
 const getPlayerStatsById = (req, res) => {
   const { player_id } = req.params;
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const offset = (page - 1) * limit;
+  const itemsPerPage = parseInt(req.query.itemsPerPage) || 10;  // Default to 10 if not provided
+  const offset = (page - 1) * itemsPerPage;
 
   const query = `
     SELECT * FROM playersCareerStats
@@ -70,7 +81,7 @@ const getPlayerStatsById = (req, res) => {
   `;
   const countQuery = `SELECT COUNT(*) AS total FROM playersCareerStats WHERE player_id = ?;`;
 
-  db.all(query, [player_id, limit, offset], (err, rows) => {
+  db.all(query, [player_id, itemsPerPage, offset], (err, rows) => {
     if (err) return res.status(500).json({ error: 'Database error', details: err.message });
     if (rows.length === 0) return res.status(404).json({ message: 'Player stats not found' });
 
@@ -78,7 +89,7 @@ const getPlayerStatsById = (req, res) => {
       if (err) return res.status(500).json({ error: 'Database error', details: err.message });
       res.status(200).json({
         playerStats: rows,
-        pagination: handlePagination(countResult?.total || 0, limit, page),
+        pagination: handlePagination(countResult?.total || 0, itemsPerPage, page),
       });
     });
   });
@@ -132,8 +143,8 @@ const getAllTeamStatCategories = (req, res) => {
 // Get all teams with pagination
 const getAllTeams = (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const offset = (page - 1) * limit;
+  const itemsPerPage = parseInt(req.query.itemsPerPage) || 10;  // Default to 10 if not provided
+  const offset = (page - 1) * itemsPerPage;
 
   const query = `
     SELECT * FROM teams
@@ -141,14 +152,14 @@ const getAllTeams = (req, res) => {
   `;
   const countQuery = `SELECT COUNT(*) AS total FROM teams;`;
 
-  db.all(query, [limit, offset], (err, rows) => {
+  db.all(query, [itemsPerPage, offset], (err, rows) => {
     if (err) return res.status(500).json({ error: 'Database error', details: err.message });
 
     db.get(countQuery, (err, countResult) => {
       if (err) return res.status(500).json({ error: 'Database error', details: err.message });
       res.status(200).json({
         teams: rows,
-        pagination: handlePagination(countResult?.total || 0, limit, page),
+        pagination: handlePagination(countResult?.total || 0, itemsPerPage, page),
       });
     });
   });
@@ -158,8 +169,8 @@ const getAllTeams = (req, res) => {
 const getTeamRoster = (req, res) => {
   const { team_id } = req.params;
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const offset = (page - 1) * limit;
+  const itemsPerPage = parseInt(req.query.itemsPerPage) || 10;  // Default to 10 if not provided
+  const offset = (page - 1) * itemsPerPage;
 
   const query = `
     SELECT * FROM players
@@ -168,7 +179,7 @@ const getTeamRoster = (req, res) => {
   `;
   const countQuery = `SELECT COUNT(*) AS total FROM players WHERE team_id = ?;`;
 
-  db.all(query, [team_id, limit, offset], (err, rows) => {
+  db.all(query, [team_id, itemsPerPage, offset], (err, rows) => {
     if (err) return res.status(500).json({ error: 'Database error', details: err.message });
     if (rows.length === 0) return res.status(404).json({ message: 'No players found for this team' });
 
@@ -176,7 +187,7 @@ const getTeamRoster = (req, res) => {
       if (err) return res.status(500).json({ error: 'Database error', details: err.message });
       res.status(200).json({
         players: rows,
-        pagination: handlePagination(countResult?.total || 0, limit, page),
+        pagination: handlePagination(countResult?.total || 0, itemsPerPage, page),
       });
     });
   });
@@ -186,8 +197,8 @@ const getTeamRoster = (req, res) => {
 const getPlayersByPosition = (req, res) => {
   const { position } = req.params;
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const offset = (page - 1) * limit;
+  const itemsPerPage = parseInt(req.query.itemsPerPage) || 10;  // Default to 10 if not provided
+  const offset = (page - 1) * itemsPerPage;
 
   const query = `
     SELECT * FROM players
@@ -196,7 +207,7 @@ const getPlayersByPosition = (req, res) => {
   `;
   const countQuery = `SELECT COUNT(*) AS total FROM players WHERE position_name = ?;`;
 
-  db.all(query, [position, limit, offset], (err, rows) => {
+  db.all(query, [position, itemsPerPage, offset], (err, rows) => {
     if (err) return res.status(500).json({ error: 'Database error', details: err.message });
     if (rows.length === 0) return res.status(404).json({ message: 'No players found in this position' });
 
@@ -204,7 +215,7 @@ const getPlayersByPosition = (req, res) => {
       if (err) return res.status(500).json({ error: 'Database error', details: err.message });
       res.status(200).json({
         players: rows,
-        pagination: handlePagination(countResult?.total || 0, limit, page),
+        pagination: handlePagination(countResult?.total || 0, itemsPerPage, page),
       });
     });
   });
@@ -212,7 +223,7 @@ const getPlayersByPosition = (req, res) => {
 
 // Get all player stat categories
 const getAllPlayerStatCategories = (req, res) => {
-  const query = `SELECT * FROM playerStatsCategories;`;
+  const query = `SELECT * FROM playerStatCategories;`;
 
   db.all(query, (err, rows) => {
     if (err) return res.status(500).json({ error: 'Database error', details: err.message });
@@ -263,90 +274,128 @@ const search = (req, res) => {
     SELECT 'team' AS type, id, name, abbreviation, location, display_name
     FROM teams
     WHERE name LIKE ? OR abbreviation LIKE ? OR location LIKE ? OR display_name LIKE ?
-    LIMIT ? OFFSET ?
+    LIMIT ? OFFSET ?;
   `;
-  
+  const countTeamQuery = `
+    SELECT COUNT(*) AS total FROM teams
+    WHERE name LIKE ? OR abbreviation LIKE ? OR location LIKE ? OR display_name LIKE ?;
+  `;
+
   const playerQuery = `
     SELECT 'player' AS type, id, first_name, last_name, full_name, position_name, college
     FROM players
     WHERE first_name LIKE ? OR last_name LIKE ? OR full_name LIKE ? 
        OR position_name LIKE ? OR college LIKE ? OR jersey_number LIKE ?
-    LIMIT ? OFFSET ?
+    LIMIT ? OFFSET ?;
   `;
-  
+  const countPlayerQuery = `
+    SELECT COUNT(*) AS total FROM players
+    WHERE first_name LIKE ? OR last_name LIKE ? OR full_name LIKE ? 
+       OR position_name LIKE ? OR college LIKE ? OR jersey_number LIKE ?;
+  `;
+
   const teamStatQuery = `
     SELECT 'team_stat' AS type, id, name, display_name, description
     FROM teamYearlyStats
     WHERE name LIKE ? OR display_name LIKE ? OR description LIKE ?
-    LIMIT ? OFFSET ?
+    LIMIT ? OFFSET ?;
   `;
-  
+  const countTeamStatQuery = `
+    SELECT COUNT(*) AS total FROM teamYearlyStats
+    WHERE name LIKE ? OR display_name LIKE ? OR description LIKE ?;
+  `;
+
   const playerCareerStatQuery = `
     SELECT 'player_stat' AS type, id, display_value
     FROM playersCareerStats
     WHERE display_value LIKE ?
-    LIMIT ? OFFSET ?
+    LIMIT ? OFFSET ?;
   `;
-  
+  const countPlayerCareerStatQuery = `
+    SELECT COUNT(*) AS total FROM playersCareerStats
+    WHERE display_value LIKE ?;
+  `;
+
   const playerYearlyStatQuery = `
     SELECT 'player_stat' AS type, id, display_value
     FROM playersYearlyStats
     WHERE display_value LIKE ?
-    LIMIT ? OFFSET ?
+    LIMIT ? OFFSET ?;
+  `;
+  const countPlayerYearlyStatQuery = `
+    SELECT COUNT(*) AS total FROM playersYearlyStats
+    WHERE display_value LIKE ?;
   `;
 
   // Use LIKE with wildcards for the search term
   const searchTerm = `%${q}%`;
 
-  // Execute the queries in parallel using db.all()
+  // Execute the queries in parallel using db.all() and db.get() for count queries
   Promise.all([
     new Promise((resolve, reject) => {
-      const teamParams = [searchTerm, searchTerm, searchTerm, searchTerm, limit, offset];
-      db.all(teamQuery, teamParams, (err, teamResults) => {
+      const params = [searchTerm, searchTerm, searchTerm, searchTerm, limit, offset];
+      db.all(teamQuery, params, (err, teamResults) => {
         if (err) reject(err);
-        resolve(teamResults);
+        db.get(countTeamQuery, [searchTerm, searchTerm, searchTerm, searchTerm], (err, countResult) => {
+          if (err) reject(err);
+          resolve({ results: teamResults, total: countResult.total });
+        });
       });
     }),
     new Promise((resolve, reject) => {
-      const playerParams = [searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, limit, offset];
-      db.all(playerQuery, playerParams, (err, playerResults) => {
+      const params = [searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, limit, offset];
+      db.all(playerQuery, params, (err, playerResults) => {
         if (err) reject(err);
-        resolve(playerResults);
+        db.get(countPlayerQuery, [searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm], (err, countResult) => {
+          if (err) reject(err);
+          resolve({ results: playerResults, total: countResult.total });
+        });
       });
     }),
     new Promise((resolve, reject) => {
-      const teamStatParams = [searchTerm, searchTerm, searchTerm, limit, offset];
-      db.all(teamStatQuery, teamStatParams, (err, teamStatResults) => {
+      const params = [searchTerm, searchTerm, searchTerm, limit, offset];
+      db.all(teamStatQuery, params, (err, teamStatResults) => {
         if (err) reject(err);
-        resolve(teamStatResults);
+        db.get(countTeamStatQuery, [searchTerm, searchTerm, searchTerm], (err, countResult) => {
+          if (err) reject(err);
+          resolve({ results: teamStatResults, total: countResult.total });
+        });
       });
     }),
     new Promise((resolve, reject) => {
-      const playerCareerStatParams = [searchTerm, limit, offset];
-      db.all(playerCareerStatQuery, playerCareerStatParams, (err, playerCareerStatResults) => {
+      const params = [searchTerm, limit, offset];
+      db.all(playerCareerStatQuery, params, (err, playerCareerStatResults) => {
         if (err) reject(err);
-        resolve(playerCareerStatResults);
+        db.get(countPlayerCareerStatQuery, [searchTerm], (err, countResult) => {
+          if (err) reject(err);
+          resolve({ results: playerCareerStatResults, total: countResult.total });
+        });
       });
     }),
     new Promise((resolve, reject) => {
-      const playerYearlyStatParams = [searchTerm, limit, offset];
-      db.all(playerYearlyStatQuery, playerYearlyStatParams, (err, playerYearlyStatResults) => {
+      const params = [searchTerm, limit, offset];
+      db.all(playerYearlyStatQuery, params, (err, playerYearlyStatResults) => {
         if (err) reject(err);
-        resolve(playerYearlyStatResults);
+        db.get(countPlayerYearlyStatQuery, [searchTerm], (err, countResult) => {
+          if (err) reject(err);
+          resolve({ results: playerYearlyStatResults, total: countResult.total });
+        });
       });
     })
   ])
   .then(results => {
     const combinedResults = [
-      ...results[0], // Teams
-      ...results[1], // Players
-      ...results[2], // Team Stats
-      ...results[3], // Player Career Stats
-      ...results[4]  // Player Yearly Stats
+      ...results[0].results, // Teams
+      ...results[1].results, // Players
+      ...results[2].results, // Team Stats
+      ...results[3].results, // Player Career Stats
+      ...results[4].results  // Player Yearly Stats
     ];
 
+    // Total results from all queries combined
+    const totalResults = results.reduce((sum, result) => sum + result.total, 0);
+
     // Pagination information
-    const totalResults = combinedResults.length;
     const pagination = {
       currentPage: page,
       itemsPerPage: limit,
@@ -361,6 +410,7 @@ const search = (req, res) => {
     res.status(500).json({ error: 'Database error', details: err.message });
   });
 };
+
 
 
 module.exports = {

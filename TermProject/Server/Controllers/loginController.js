@@ -33,25 +33,54 @@ const login = (req, res) => {
 
 const register = (req, res) => {
   let { email, password, is_admin } = req.body;
+  console.log(req.body);
 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required' });
   }
+
   email = normalizeEmail(email);
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
+
+  // Check if the email is already in use
+  const query = `SELECT * FROM login WHERE email = ?`;
+  db.get(query, [email], (err, existingUser) => {
     if (err) {
-      return res.status(500).json({ error: 'Error hashing password', details: err.message });
+      return res.status(500).json({ error: 'Database error', details: err.message });
     }
 
-    const query = `INSERT INTO login (email, password, is_admin) VALUES (?, ?, ?)`;
-    db.run(query, [email, hashedPassword, is_admin || 0], function (err) {
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email is already in use' }); // Email already exists
+    }
+
+    // If the email is not in use, hash the password and proceed with registration
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
       if (err) {
-        return res.status(500).json({ error: 'Database error', details: err.message });
+        return res.status(500).json({ error: 'Error hashing password', details: err.message });
       }
-      return res.status(201).json({ message: 'User registered successfully', userId: this.lastID });
+
+      // Insert the new user into the database
+      const insertQuery = `INSERT INTO login (email, password, is_admin) VALUES (?, ?, ?)`;
+      db.run(insertQuery, [email, hashedPassword, is_admin || 0], function (err) {
+        if (err) {
+          return res.status(500).json({ error: 'Database error', details: err.message });
+        }
+
+        // Generate JWT token for the newly registered user
+        const token = jwt.sign(
+          { id: this.lastID, is_admin: is_admin || 0 }, 
+          process.env.JWT_SECRET, 
+          { expiresIn: '12h' }
+        );
+
+        return res.status(201).json({
+          message: 'User registered successfully',
+          token: token
+        });
+      });
     });
   });
 };
+
 
 const viewProfile = (req, res) => {
   const { id } = req.user;

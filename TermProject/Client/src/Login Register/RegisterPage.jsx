@@ -1,19 +1,43 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/RegisterPage.css';
+import { Link, useNavigate } from 'react-router-dom'; // Added useNavigate
+import './RegisterPage.css';
 
 const RegisterPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [inputEmail, setEmail] = useState('');
+  const [inputPassword, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (email && password && password === confirmPassword) {
-      // Here you would typically call your API to register the user
-      console.log('Registering with:', email, password);
-      setError('');
+    if (inputEmail && inputPassword && inputPassword === confirmPassword) {
+      // Send the data to the API to register the user
+      fetch('http://localhost:3000/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: inputEmail,
+          password: inputPassword,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.token) {
+            alert('Registration Successful!');
+            localStorage.setItem('authToken', data.token);
+            navigate('/home'); // Redirect to the home page after successful registration
+          } else {
+            // Handle general registration errors
+            setError(data.error || 'Registration failed. Please try again.');
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          setError('Something went wrong. Please try again later.');
+        });
     } else {
       setError('Passwords must match and all fields are required.');
     }
@@ -22,13 +46,13 @@ const RegisterPage = () => {
   return (
     <div className="register-container">
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="register-form">
         <div className="input-group">
           <label>Email</label>
           <input
             type="email"
             placeholder="Enter your email"
-            value={email}
+            value={inputEmail}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -38,7 +62,7 @@ const RegisterPage = () => {
           <input
             type="password"
             placeholder="Enter your password"
-            value={password}
+            value={inputPassword}
             onChange={(e) => setPassword(e.target.value)}
             required
           />

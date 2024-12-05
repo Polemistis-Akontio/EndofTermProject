@@ -1,0 +1,138 @@
+/* General Styling for the entire page */
+.football-stats {
+    font-family: Arial, sans-serif;
+    background-color: #181818; /* Dark background */
+    color: #ddd; /* Light text color */
+    display: flex; /* Use flexbox to layout items horizontally */
+    flex-wrap: wrap; /* Allow items to wrap if needed */
+    justify-content: space-between; /* Distribute space between items */
+    padding: 20px;
+    max-width: 100%; /* Ensure it uses full width */
+    margin: 0 auto;
+    box-sizing: border-box; /* Include padding and border in width calculation */
+  }
+  
+  /* Header for the home page */
+  .football-stats h1 {
+    font-size: 2rem;
+    color: #1e3a8a; /* Blue color for the header */
+    margin-bottom: 10px;
+    width: 100%; /* Full width for the header */
+  }
+  
+  /* Paragraph for intro text on the homepage */
+  .football-stats p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #bbb; /* Lighter gray text */
+    width: 100%; /* Full width for the paragraph */
+  }
+  
+  /* Button for navigating to the teams page */
+  .football-stats button {
+    background-color: #1e3a8a;
+    color: white;
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Make the button span the full width */
+  }
+  
+  .football-stats button:hover {
+    background-color: #2563eb;
+  }
+  
+  /* Teams container styling */
+  .teams-container {
+    display: flex; /* Use flexbox for horizontal layout */
+    flex-wrap: wrap; /* Allow items to wrap */
+    justify-content: flex-start; /* Align items to the left */
+    margin-top: 20px;
+    width: 100%; /* Full width for the container */
+  }
+  
+  /* List of teams */
+  .teams-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap; /* Wrap items */
+    justify-content: space-between; /* Distribute space between team items */
+    width: 100%; /* Full width for the list */
+  }
+  
+  /* Individual team items */
+  .team-item {
+    background-color: #2d2d2d; /* Dark background for team items */
+    border: 1px solid #444; /* Slightly lighter border */
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    width: 22%; /* Set width for team items (adjust to your liking) */
+    box-sizing: border-box; /* Include padding in the width */
+  }
+  
+  /* Team info header (name) */
+  .team-info h3 {
+    font-size: 1.5rem;
+    color: #1e3a8a; /* Blue color for team names */
+    margin: 0;
+  }
+  
+  /* Team info text (location) */
+  .team-info p {
+    color: #bbb; /* Light gray color for location */
+    font-size: 1rem;
+  }
+  
+  /* Load More button */
+  .load-more {
+    background-color: #34d399;
+    color: white;
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%; /* Make the load more button span full width */
+  }
+  
+  .load-more:hover {
+    background-color: #10b981;
+  }
+  
+  /* Error message styling */
+  .football-stats div {
+    color: #e3342f; /* Red for error messages */
+    font-size: 1.1rem;
+  }
+  
+  /* Optional: Add custom scrollbar styles for dark theme */
+  .football-stats {
+    scrollbar-width: thin;
+    scrollbar-color: #444 #181818;
+  }
+  
+  .football-stats::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .football-stats::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 4px;
+  }
+  
+  .football-stats::-webkit-scrollbar-track {
+    background-color: #181818;
+  }
+  

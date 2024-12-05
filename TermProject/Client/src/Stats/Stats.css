@@ -1,0 +1,253 @@
+/* General Styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Heading Styling */
+h1, h2, h3 {
+  color: #bb86fc;
+  text-align: center;
+  margin: 20px 0;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+.league-list {
+  list-style-type: none; /* Removes bullet points */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+  padding-left: 0; /* Explicitly removes left padding caused by list-style */
+}
+
+.sports-section{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+/* Links */
+a {
+  color: #03dac6;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #00bfa5;
+  font-weight: bold;
+}
+
+/* Container and Layout */
+.football-stats,
+.team-details {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filter-selection form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.filter-selection label {
+  margin: 10px;
+  color: #e0e0e0;
+}
+
+.filter-selection select,
+.filter-selection button {
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 1rem;
+  background-color: #333;
+  border: 1px solid #bb86fc;
+  color: #e0e0e0;
+  border-radius: 4px;
+}
+
+.filter-selection select:focus,
+.filter-selection button:focus {
+  outline: none;
+  border-color: #03dac6;
+}
+
+/* Team Stats Section */
+.team-stats {
+  margin-top: 30px;
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.stat-item {
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  border: 1px solid #bb86fc; /* Add a border with a color of your choice */
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); /* Optional: Add a soft glow effect */
+}
+
+
+.stat-item strong {
+  color: #bb86fc;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+  color: #e0e0e0;
+}
+
+.pagination button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #bb86fc;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #03dac6;
+  border-color: #03dac6;
+}
+
+/* Stats List */
+.teams-container {
+  margin-top: 30px;
+}
+
+.teams-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.teams-list .team-item {
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+}
+
+.team-info {
+  text-align: center;
+}
+
+.team-info h3 {
+  font-size: 1.2rem;
+}
+
+.team-info p {
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+/* Results Per Page */
+.results-per-page {
+  margin-top: 20px;
+  text-align: center;
+  color: #e0e0e0;
+}
+
+.results-per-page select {
+  padding: 10px;
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #bb86fc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.results-per-page select:focus {
+  outline: none;
+  border-color: #03dac6;
+}
+
+/* Button Styling */
+button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #bb86fc;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #03dac6;
+  border-color: #03dac6;
+}
+
+.view-custom-stats {
+  margin: 20px;
+  padding: 20px;
+  background-color: #2f2f2f;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  font-size: 2rem;
+  color: #ff9800;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Styling the table */
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #424242;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.stats-table th, .stats-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #616161;
+}
+
+.stats-table th {
+  background-color: #333333;
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.stats-table td {
+  color: #e0e0e0;
+}
+
+.stats-table tr:hover {
+  background-color: #616161;
+}
+
+/* Loading and error messages */
+.loading, .error {
+  font-size: 1.2rem;
+  color: #ff9800;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* No data message */
+.no-data {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ff9800;
+  margin-top: 20px;
+}
